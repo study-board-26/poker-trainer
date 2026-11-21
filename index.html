@@ -7127,8 +7127,11 @@ bootFirstHand();
   function hidden(){ try{ return localStorage.getItem(KEY)==='1'; }catch(e){ return false; } }
   var full = (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches)
              || window.navigator.standalone===true;
+  /* 触れる画面かどうかだけでは足りない（触れるパソコンにも出てしまう）。
+     画面の幅も見て、スマホくらいのときだけ出す。 */
   var touch = ('ontouchstart' in window) || navigator.maxTouchPoints>0;
-  if(full || !touch || hidden()) return;
+  var small = Math.min(window.innerWidth, window.screen? window.screen.width : 9999) <= 820;
+  if(full || !touch || !small || hidden()) return;
   var ios = /iPad|iPhone|iPod/.test(navigator.userAgent)
             || (navigator.platform==='MacIntel' && navigator.maxTouchPoints>1);
   var how = ios
